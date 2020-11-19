@@ -6,9 +6,9 @@
  
  
 	asm("lock: ;"
-			//first we put the pointer to our lock passed as argumentin ebx 
-			"movl $1, %eax;" //we set eax to 1
-			"xchgl %eax, (ebx);"//atomic instruction to exchange value of eax and our lock value
+			"movl (%esp), %ecx;"//put the pointer to our lock passed as argument in ecx 
+			"movl $1, %eax;" // set eax to 1
+			"xchgl %eax, ($ecx);"//atomic instruction to exchange value of eax and our lock value
 			"testl %eax, %eax;" //test if eax==0 -> if that's the case, the lock is still used by another thread
 			"jnz lock;" //loop back to the begining of our function while the lock is still in use
 		"ret;"
@@ -16,9 +16,9 @@
 
 	asm(	
 		"unlock: ;"
-		    //first we put the pointer to our lock passed as argumentin ebx 
-			"movl $0, %eax" //we set eac to 0
-			"xchgl %eax, (lock); "//atomic instruction to exchange value of eax and our lock value
+		    "movl (%esp), %ecx;"// put the pointer to our lock passed as argument in ecx 
+			"movl $0, %eax;" // set eax to 0
+			"xchgl %eax, (%ecx); "//atomic instruction to exchange value of eax and our lock value
 			//this xchg operation is the one that actually unlock TnS lock. 
 			"ret"
 	);

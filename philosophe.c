@@ -29,7 +29,7 @@ int main(int argc,char *argv[]){
 	pthread_mutex_t chopstick[n];
 	pthread_t phil[n];
 	for (int i=0; i<n;i++){
-		err=pthread_create(&(phil[i]),NULL,philosopher(&i),NULL);
+		int err=pthread_create(&(phil[i]),NULL,philosopher(&i),NULL);
 		if(err!=0){
 			fprintf(stderr,"Error creating thread %d\n", i);
 		}
