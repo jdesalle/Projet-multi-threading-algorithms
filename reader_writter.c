@@ -9,7 +9,7 @@
 #include<unistd.h>
 pthread_mutex_t mreaders;//protect readers and nread
 pthread_mutex_t mwriters;//protect writers and nwrite
-pthread_mutex_t x;//check only one reader use sem_wait at a time
+pthread_mutex_t x;//allow priority for writers
 sem_t swrite;//block writers
 sem_t sread;//block readers
 int readers=0;//number of reader currently reading
@@ -19,7 +19,24 @@ int nwrite=0;//number of writing alreadydone.(should go to 640)
 
 void reader(void *args){
 	while(nread<2560){
-		
+		pthread_mutex_lock(&x);
+			sem_wait(&sread);//new writer waiting
+			pthread_mutex_lock(&mreaders);	
+				readers++;//a new reader has arrived
+				if (readers==1){//first reader
+					sem_wait(&swrite);
+				}
+			pthread_mutex_unlock(&mreaders);
+			sem_post(&sread);//allow nex reader to proceed
+		pthread_mutex_unlock(&x);
+		while(rand() > RAND_MAX/10000);//simulate action on db
+		pthread_mutex_lock(&mreaders);
+			nread++
+			readers--;
+			if (readers==0){//last reader
+				sem_post(&swriters);
+			}
+		pthread_mutex_unlock(&mreaders);
 	}
 }
 void writers(void *args){
@@ -30,7 +47,7 @@ void writers(void *args){
 				sem_wait(&sread);
 			}
 		pthread_mutex_unlock(&mwriters);
-		sem_wait(&swrite);
+		sem_wait(&swrite);//only one writer on the db at a time
 			while(rand() > RAND_MAX/10000);//simulate action on db
 		sem_post(&swrite);
 		pthread_mutex_lock(&mwriters);
