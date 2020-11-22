@@ -39,7 +39,7 @@ void reader(void *args){
 		pthread_mutex_unlock(&mreaders);
 	}
 }
-void writers(void *args){
+void writer(void *args){
 	while(nwrite<640){
 		pthread_mutex_lock(&mwriters);
 			writers++; //a new writer has arrived
@@ -60,5 +60,39 @@ void writers(void *args){
 	}
 }
 int maint (int argc, char* argv[]){
+	char ch;
+	int nthread_readers;
+	int nthread_writers;
+	while ((ch=getopt(argc, argv, "r:w:")) !=  EOF){
+		switch(ch){
+			case 'r':
+				nthread_readers=atoi(optarg);
+				break;
+			case 'w':
+				nthread_writers=atoi(optarg);
+				break;
+			default:
+				fprintf(stderr, "invalid argument");
+		}
+	}
+	
+	//TO DO: initiate mutexes && semaphores
+	pthread_t thread_readers[nthread_readers];
+	pthread_t thread_writers[nthread_writers;];
+	int err;
+	for (int i=0; i<n;i++){//create readers threads
+		err=pthread_create(&(thread_readers[i]),NULL,reader,NULL);
+		if(err!=0){
+			fprintf(stderr,"Error creating thread reader %d\n", i);
+		}
+	}
+	for (int i=0; i<n;i++){//create writers threads
+		err=pthread_create(&thread_writers[i]),NULL,writer,NULL);
+		if(err!=0){
+			fprintf(stderr,"Error creating thread reader %d\n", i);
+		}
+	}
+	
+	//TO DO  destroy mutexes and semaphores
 	return 0
 }
