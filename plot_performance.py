@@ -38,12 +38,8 @@ while curr < len(n) :
 	t_moy.append(np.mean(val))
 	curr += 1
 	
-# On crée deux graphes. Le premier pour les mesures de performances et le deuxième pour les écart-types
-# On commence par tracer le premier
-plt.subplot(121)
-
 # On trace le temps d'exécution en fonction du nombre de threads en bleu avec un trait plein de 1 pixel d'épaisseur
-plt.plot(n, t_moy, color="blue", linewidth=1.0, linestyle="-")
+plt.errorbar(n, t_moy, yerr=ecart_type, ecolor='red')
 
 # Limiter le range de valeurs affichées pour l'axe x (abscisses)
 plt.xlim(1, len(n))
@@ -53,12 +49,6 @@ plt.xticks(np.linspace(1, len(n), len(n)))
 
 # Donner un label à l'axe x
 plt.xlabel('Nombre de threads')
-
-# Limiter le range de valeurs affichées pour l'axe y (ordonnées)
-plt.ylim(0,30)
-
-# Forcer la graduation en y.
-plt.yticks(np.linspace(0,30,7))
 
 # Donner un label à l'axe y
 plt.ylabel('Temps moyen (secondes)')
@@ -68,39 +58,6 @@ plt.title("Mesures de performance")
 
 # Permet d'ajouter une grille au graphe, rendant la lecture de vos données plus facile.
 plt.grid(True)
-
-# On trace ensuite le deuxième graphe
-plt.subplot(122)
-
-# On trace l'écart-type en fonction du nombre de threads en rouge avec un trait plein de 1 pixel d'épaisseur
-plt.plot(n, ecart_type, color="red", linewidth=1.0, linestyle="-")
-
-# Limiter le range de valeurs affichées pour l'axe x (abscisses)
-plt.xlim(1, len(n))
-
-# Forcer la graduation en x. np.linspace découpe l'intervalle [1, len(n)] en len(n) parties égales
-plt.xticks(np.linspace(1, len(n), len(n)))
-
-# Donner un label à l'axe x
-plt.xlabel('Nombre de threads')
-
-# Limiter le range de valeurs affichées pour l'axe y (ordonnées)
-plt.ylim(0,2)
-
-# Forcer la graduation en y.
-plt.yticks(np.linspace(0,2,5))
-
-# Donner un label à l'axe y
-plt.ylabel('Ecart-type (secondes)')
-
-# Donner un titre au graphe.
-plt.title('Ecarts-types')
-
-# Permet d'ajouter une grille au graphe, rendant la lecture de vos données plus facile.
-plt.grid(True)
-
-# On évite la superposition des graphes
-plt.tight_layout()
 
 # On enregistre les graphiques. L'extension est directement déduite du nom donné en argument (png par défault).
 plt.savefig("Graphes_python.png")
