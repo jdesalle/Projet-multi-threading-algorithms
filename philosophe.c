@@ -29,20 +29,21 @@ int main(int argc,char *argv[]){
 	pthread_mutex_t chopsticks[n];//this one allow us to create an array of element of size unknown at compile time
 	int err;
 	for (int i=0;i<n;i++){
-		err=pthread_mutex_init( chopsticks[i], NULL);
+		err=pthread_mutex_init(&chopsticks[i], NULL);
 		if(err!=0)
 			fprintf(stderr,"Error initializing pthread_mutex");
 	}
 	chopstick=chopsticks;//we link this array to ou static pointer, so each thread can use it
 	pthread_t phil[n];
 	for (int i=0; i<n;i++){
-		err=pthread_create(&(phil[i]),NULL,philosopher(&i),NULL);
+		int id=i;
+		err=pthread_create(&(phil[i]),NULL,philosopher(&id),NULL);
 		if(err!=0){
 			fprintf(stderr,"Error creating thread %d\n", i);
 		}
 	}
 	for (int i=0;i<n;i++){
-		err=pthread_mutex_destroy( chopsticks[i]);
+		err=pthread_mutex_destroy(&chopsticks[i]);
 		if(err!=0)
 			fprintf(stderr,"Error destroying pthread_mutex");
 	}

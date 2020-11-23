@@ -7,7 +7,9 @@
 	
 //this implementation use a pointer to an int that will be used as the "lock" in our spinlock.
 //these functions are implemented using inline assembly(X86((IA32) make use of the xchg atomic instruction.
-	void lock (int *mylock){
+
+    
+	void lock ( TnS_t *mylock){
 	    int ax;
 	    do {
 	        ax=1;
@@ -18,7 +20,7 @@
 	    	);
 	    }while(ax==0);
 	}
-	void unlock(int *mylock){
+	void unlock(TnS_t *mylock){
         int ax=0;
 	    asm(
 			 "xchgl %1, (%0);"//atomic instruction to exchange value of eax and our lock value
