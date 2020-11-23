@@ -42,7 +42,10 @@ while curr < len(n) :
 plt.errorbar(n, t_moy, yerr=ecart_type, ecolor='red')
 
 # Limiter le range de valeurs affichées pour l'axe x (abscisses)
-plt.xlim(1, len(n))
+plt.xlim(0.9, len(n)+0.1)
+
+# Débuter l'axe y à 0 (ordonnées)
+plt.ylim(ymin=0)
 
 # Forcer la graduation en x. np.linspace découpe l'intervalle [1, len(n)] en len(n) parties égales
 plt.xticks(np.linspace(1, len(n), len(n)))

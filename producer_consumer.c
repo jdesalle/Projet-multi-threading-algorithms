@@ -5,8 +5,8 @@
 #include <limits.h>
 
 #define slots 8
-int MAX_PROD;
-int MAX_CONS;
+int NPROD;
+int NCONS;
 
 pthread_mutex_t mutex; 
 sem_t empty;
@@ -25,8 +25,8 @@ int buffer[slots];
 
 int nb_rand(){
     union {
-        int i;
-        unsigned char uc[sizeof(int)];
+       int i;
+       unsigned char uc[sizeof(int)];
     } u;
     for (size_t i = 0; i < sizeof(u.uc); i++){
         u.uc[i] = rand();
@@ -34,9 +34,14 @@ int nb_rand(){
     return u.i;
 }
 
+void my_time_spent(){
+    while(rand() > RAND_MAX/10000);
+    return;
+}
+
 void *producer(void* args){
     // insertion
-    while(n_prod <= 1024 - MAX_PROD){
+    while(n_prod < 1024){
         sem_wait(&empty); //producer must wait until one slot is empty
         pthread_mutex_lock(&mutex); //lock buffer
         buffer[last] = nb_rand();
@@ -44,16 +49,16 @@ void *producer(void* args){
         last = (last+1)%slots; //we move to the next slot
         count_p++;
         n_prod++;
-        while(rand() > RAND_MAX/10000);
         pthread_mutex_unlock(&mutex); //unlock buffer
         sem_post(&full); //wakeup the consumer
+        my_time_spent();
     }
     pthread_exit(NULL);
 }
 
 void *consumer(void* args){
     //extraction
-    while(n_cons <= 1024 - MAX_CONS){
+    while(n_cons < 1024){
         sem_wait(&full); //consumer must wait until producer added something
         pthread_mutex_lock(&mutex);
         int x = buffer[first];
@@ -61,20 +66,20 @@ void *consumer(void* args){
         first = (first+1)%slots;
         count_c++;
         n_cons++;
-        while(rand() > RAND_MAX/10000);
         pthread_mutex_unlock(&mutex);
         sem_post(&empty); //wakeup the producer
+        my_time_spent();
     }
     pthread_exit(NULL);
 }
 
 int main(int argc, char *argv[]){
 
-    MAX_CONS = atoi(argv[1]);
-    MAX_PROD = atoi(argv[2]);
+    NCONS = atoi(argv[1]);
+    NPROD = atoi(argv[2]);
 
-    printf("Nombre cons : %d\n", MAX_CONS);
-    printf("Nombre prod : %d\n", MAX_PROD);
+    printf("Nombre cons : %d\n", NCONS);
+    printf("Nombre prod : %d\n", NPROD);
     
     // initialize semaphore for empty slots,
     // upon start up all slots are empty
@@ -88,23 +93,23 @@ int main(int argc, char *argv[]){
 
     //init consumer thread
     //init producer thread
-    pthread_t cons[MAX_CONS], prod[MAX_PROD];
+    pthread_t cons[NCONS], prod[NPROD];
 
-    for(int i = 0; i < MAX_CONS; i++){
+    for(int i = 0; i < NCONS; i++){
         pthread_create(&cons[i], NULL, consumer, NULL);
     }
 
-    for(int i = 0; i < MAX_PROD; i++){
+    for(int i = 0; i < NPROD; i++){
         pthread_create(&prod[i], NULL, producer, NULL);
     }
 
 
     //wait until prod and cons finish their jobs
-    for(int i = 0; i < MAX_CONS; i++){
+    for(int i = 0; i < NCONS; i++){
         pthread_join(cons[i], NULL);
     }
 
-    for(int i = 0; i < MAX_PROD; i++){
+    for(int i = 0; i < NPROD; i++){
         pthread_join(prod[i], NULL);
     }
 
