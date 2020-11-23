@@ -7,6 +7,6 @@
 #include<stdlib.h>
 
 //this implementation use a pointer to an int that will be used as the "lock" in our spinlock.
-//these functions are implemented in x86 in line assembly(IA32) make use of the xchg atomic instruction.
+//these functions are implemented in inline assembly(x86(IA32)) make use of the xchg atomic instruction.
 void lock (int *mylock);
 void unlock(int *mylock);

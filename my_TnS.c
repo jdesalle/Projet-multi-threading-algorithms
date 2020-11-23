@@ -4,21 +4,25 @@
  *pair 3-8 composed of Jonathan de Salle and Philippine de Suraÿ in 2020.
  */
  
- 
-	asm("lock: ;"
-			"movl (%esp), %ecx;"//put the pointer to our lock passed as argument in ecx 
-			"movl $1, %eax;" // set eax to 1
-			"xchgl %eax, ($ecx);"//atomic instruction to exchange value of eax and our lock value
-			"testl %eax, %eax;" //test if eax==0 -> if that's the case, the lock is still used by another thread
-			"jnz lock;" //loop back to the begining of our function while the lock is still in use
-		"ret;"
-	);
-
-	asm(	
-		"unlock: ;"
-		    "movl (%esp), %ecx;"// put the pointer to our lock passed as argument in ecx 
-			"movl $0, %eax;" // set eax to 0
-			"xchgl %eax, (%ecx); "//atomic instruction to exchange value of eax and our lock value
-			//this xchg operation is the one that actually unlock TnS lock. 
-			"ret"
-	);
+	
+//this implementation use a pointer to an int that will be used as the "lock" in our spinlock.
+//these functions are implemented using inline assembly(X86((IA32) make use of the xchg atomic instruction.
+	void lock (int *mylock){
+	    int ax;
+	    do {
+	        ax=1;
+	    	asm(
+			    "xchgl %1, (%0);"//atomic instruction to exchange value of eax and our lock value
+		    	:
+		    	:"l" (mylock), "a" (ax)
+	    	);
+	    }while(ax==0);
+	}
+	void unlock(int *mylock){
+        int ax=0;
+	    asm(
+			 "xchgl %1, (%0);"//atomic instruction to exchange value of eax and our lock value
+		    :
+		    :"l" (mylock), "a" (ax)
+	    );
+	}

@@ -89,7 +89,7 @@ int maint (int argc, char* argv[]){
 	for (int i=0; i<n;i++){//create writers threads
 		err=pthread_create(&thread_writers[i]),NULL,writer,NULL);
 		if(err!=0){
-			fprintf(stderr,"Error creating thread reader %d\n", i);
+			fprintf(stderr,"Error creating thread writer %d\n", i);
 		}
 	}
 	
