@@ -69,5 +69,6 @@ void* philosopher(void* arg){
 		pthread_mutex_unlock(&chopstick[id]);
 		pthread_mutex_unlock(&chopstick[right]);
 	}
-} 
+	pthread_exit(NULL);
+}
 

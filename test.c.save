@@ -7,14 +7,13 @@ typedef int TnS_t;
 TnS_t  locker=0;
 	void TnS_lock ( TnS_t *mylock){
 	    int ax=1;
-	    while(ax==1) {
-	        ax=1;
+	    while (ax==1){
 	    	asm(
-	                "xchgl %1, %0;"//atomic instruction to exchange value of eax and our lock value
+			    "xchgl %1, (%0);"//atomic instruction to exchange value of eax and our lock value
 		    	:
-		    	:"l" (*mylock), "a" (ax)
+		    	:"l" (mylock), "a" (ax)
 	    	);
-	    }
+	    ;
 	}
 	void TnS_unlock(TnS_t *mylock){
         int ax=0;
