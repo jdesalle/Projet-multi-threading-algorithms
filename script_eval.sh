@@ -3,16 +3,16 @@
 NTHREAD=8
 RUNS=5
 
-echo "coeurs,secondes"
+echo "coeurs,secondes" > data.csv
 
 for (( i=1; i<=RUNS; i++ ))
 do
-	for (( n=1; n<=NTHREAD; n++ ))
+	for (( n=2; n<=NTHREAD; n++ ))
 	do
-		make clean -s 2> /dev/null
-		output=$((/usr/bin/time -f %e make -j $n -s 2>&1) | cut -d\) -f2)
-		
-		echo $n,${output:1}
+		output=$(/usr/bin/time -f %e ./producer_consumer $n 2>&1)
+		echo $n,$output >> data.csv
 	done
 done
+
+./plot_performance.py
 
