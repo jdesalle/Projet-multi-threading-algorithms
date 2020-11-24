@@ -13,6 +13,7 @@ pthread_mutex_t *chopstick;//actual chopstick array used by the thread
 
 void* philosopher(void* arg);
 //take an argument for number of philosohers (threads) with the option -t
+//and number of repetitions with -r
 int main(int argc,char *argv[]){
 	char ch;
 	while ((ch=getopt(argc, argv, "t:r:")) !=  EOF){
@@ -31,6 +32,7 @@ int main(int argc,char *argv[]){
 	//chopstick will be used for the mutexe's checking that each philosophe can access to his chopstick 
 	//phil will contain each thread representing a philosopher]
 	pthread_mutex_t chopsticks[n];//this one allow us to create an array of element of size unknown at compile time
+	pthread_t phil[n];
 	int err;
 	for (int i=0;i<n;i++){
 		err=pthread_mutex_init(&chopsticks[i], NULL);
@@ -38,13 +40,11 @@ int main(int argc,char *argv[]){
 			fprintf(stderr,"Error initializing pthread_mutex");
 	}
 	chopstick=chopsticks;//we link this array to ou static pointer, so each thread can use it
-	pthread_t phil[n];
 	for (int i=0; i<n;i++){
 		int id=i;
-		err=pthread_create(&(phil[i]),NULL,philosopher(&id),NULL);
-		if(err!=0){
-			fprintf(stderr,"Error creating thread %d\n", i);
-		}
+		puts("DONE");
+		pthread_create(&phil[i],NULL,philosopher(&id),NULL);
+		puts("next!");
 	}
 	for (int i=0;i<n;i++){
 		err=pthread_mutex_destroy(&chopsticks[i]);
@@ -57,9 +57,9 @@ int main(int argc,char *argv[]){
 void* philosopher(void* arg){
 	//id also correspond to the left chopstick
 	int id=*((int *)arg);
-	int right=((id+1)%n);
+	int right=((id+1)%n);//allow us to circle for the last philosopher
 	for (int i=0;i<r;i++){
-		printf("philophe %d is thinking\n",id);
+		printf("philosophe %d is thinking\n",id);
 		//if id is pair, begin with left chopstick, otherwise begin with right (to avoid deadlock)
 		if((id&&0b1)==0){
 			pthread_mutex_lock(&chopstick[id]);
@@ -69,10 +69,11 @@ void* philosopher(void* arg){
 			pthread_mutex_lock(&chopstick[right]);
 			pthread_mutex_lock(&chopstick[id]);
 		}
-		printf("philophe %d is eating\n",id);
+		printf("philosophe %d is eating\n",id);
 		pthread_mutex_unlock(&chopstick[id]);
 		pthread_mutex_unlock(&chopstick[right]);
 	}
+	puts("exit");
 	pthread_exit(NULL);
 }
 
