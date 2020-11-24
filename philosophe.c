@@ -7,17 +7,21 @@
 #include<pthread.h>
 #include<stdlib.h>
 #include<unistd.h>
-int n=5;
+int n=5;//number of philosophers
+int r=5; // number of repetions
 pthread_mutex_t *chopstick;//actual chopstick array used by the thread
 
 void* philosopher(void* arg);
 //take an argument for number of philosohers (threads) with the option -t
 int main(int argc,char *argv[]){
 	char ch;
-	while ((ch=getopt(argc, argv, "t:")) !=  EOF){
+	while ((ch=getopt(argc, argv, "t:r:")) !=  EOF){
 		switch(ch){
 			case 't':
 				n=atoi(optarg);
+				break;
+			case 'r':
+				r=atoi(optarg);
 				break;
 			default:
 				fprintf(stderr, "invalid argument");
@@ -54,7 +58,7 @@ void* philosopher(void* arg){
 	//id also correspond to the left chopstick
 	int id=*((int *)arg);
 	int right=((id+1)%n);
-	for (int i=0;i<10000;i++){
+	for (int i=0;i<r;i++){
 		printf("philophe %d is thinking\n",id);
 		//if id is pair, begin with left chopstick, otherwise begin with right (to avoid deadlock)
 		if((id&&0b1)==0){
