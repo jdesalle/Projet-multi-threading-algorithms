@@ -32,6 +32,7 @@ void *reader(void *args){
 			sem_post(&sread);//allow nex reader to proceed
 		pthread_mutex_unlock(&x);
 		while(rand() > RAND_MAX/10000);//simulate action on db
+		puts("read");
 		pthread_mutex_lock(&mreaders);
 			nread++;
 			readers--;
@@ -94,14 +95,15 @@ int main (int argc, char* argv[]){
 	pthread_t thread_readers[nthread_readers];
 	pthread_t thread_writers[nthread_writers];
 	int err;
+	puts("init?");
 	for (int i=0; i<argreader;i++){//create readers threads
-		err=pthread_create(&(thread_readers[i]),NULL,reader,NULL);
+		err=pthread_create(&(thread_readers[i]),NULL,&reader,NULL);
 		if(err!=0){
 			fprintf(stderr,"Error creating thread reader %d\n", i);
 		}
 	}
 	for (int i=0; i<argwriter;i++){//create writers threads
-		err=pthread_create(&(thread_writers[i]),NULL,writer,NULL);
+		err=pthread_create(&(thread_writers[i]),NULL,&writer,NULL);
 		if(err!=0){
 			fprintf(stderr,"Error creating thread writer %d\n", i);
 		}

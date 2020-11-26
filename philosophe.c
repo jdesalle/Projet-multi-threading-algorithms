@@ -42,15 +42,12 @@ int main(int argc,char *argv[]){
 	chopstick=chopsticks;//we link this array to ou static pointer, so each thread can use it
 	for (int i=0; i<n;i++){
 		int id=i;
-		puts("DONE");
-		pthread_create(&phil[i],NULL,philosopher(&id),NULL);
-		puts("next!");
+		err=pthread_create(&phil[i],NULL,&philosopher,(void *) &id);
+		if(err!=0){
+			fprintf(stderr,"Error creating thread %d",id);
+		}
 	}
-	for (int i=0;i<n;i++){
-		err=pthread_mutex_destroy(&chopsticks[i]);
-		if(err!=0)
-			fprintf(stderr,"Error destroying pthread_mutex");
-	}
+	//check destroying mutex
 	return 0;
 }
 //take its id as an argument. operate 10k cycles of eating/thinking without pauses.
@@ -73,7 +70,6 @@ void* philosopher(void* arg){
 		pthread_mutex_unlock(&chopstick[id]);
 		pthread_mutex_unlock(&chopstick[right]);
 	}
-	puts("exit");
 	pthread_exit(NULL);
 }
 
