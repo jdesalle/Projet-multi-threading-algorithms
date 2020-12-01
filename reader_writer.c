@@ -21,13 +21,14 @@ int argreader=2560;
 int argwriter=640;
 void *reader(void *args){
 	puts("called reader");
-	while(nread<2560){
+	while(nread<argreader){
 		pthread_mutex_lock(&x);
 			sem_wait(&sread);//new writer waiting
 			pthread_mutex_lock(&mreaders);
 				readers++;//a new reader has arrived
 				if (readers==1){//first reader
 					sem_wait(&swrite);
+puts("entered reader SC1");
 				}
 			pthread_mutex_unlock(&mreaders);
 			sem_post(&sread);//allow nex reader to proceed
@@ -46,7 +47,7 @@ void *reader(void *args){
 }
 void *writer(void *args){
 	puts("called writer");
-	while(nwrite<640){
+	while(nwrite<argwriter){
 		pthread_mutex_lock(&mwriters);
 			writers++; //a new writer has arrived
 			if (writers==1){// first writer to arrive
@@ -93,28 +94,33 @@ int main (int argc, char* argv[]){
 	pthread_mutex_init(&mreaders,NULL);
 	pthread_mutex_init(&mwriters,NULL);
 	pthread_mutex_init (&x,NULL);
-	sem_init (&swrite,0,0);
-	sem_init (&sread,0,0);
+	sem_init (&swrite,0,1);
+	sem_init (&sread,0,1);
 
 	pthread_t thread_readers[nthread_readers];
 	pthread_t thread_writers[nthread_writers];
 	int err;
 	puts("init");
 	for (int i=0; i<nthread_readers;i++){//create readers threads
-		err=pthread_create(&(thread_readers[i]),NULL,&reader,NULL);
-		puts ("tried pthread create read");
+		err=pthread_create(&(thread_readers[i]),NULL,reader,NULL);
+		printf ("tried pthread %d create read\n",i);
 		if(err!=0){
 			fprintf(stderr,"Error creating thread reader %d\n", i);
 		}
 	}
 	for (int i=0; i<nthread_writers;i++){//create writers threads
-		err=pthread_create(&(thread_writers[i]),NULL,&writer,NULL);
-		puts ("tried pthread create write");
+		err=pthread_create(&(thread_writers[i]),NULL,writer,NULL);
+		printf ("tried pthread %d create write\n",i);
 		if(err!=0){
 			fprintf(stderr,"Error creating thread writer %d\n", i);
 		}
 	}
-	
+	for (int i=0; i<nthread_readers;i++){
+		pthread_join(thread_readers[i],NULL);
+	}
+	for (int i=0; i<nthread_writers;i++){
+		pthread_join(thread_writers[i],NULL);
+	}
 	//TO DO  destroy mutexes and semaphores
 	return 0;
 }
