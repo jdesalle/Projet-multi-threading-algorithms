@@ -20,6 +20,7 @@ int nwrite=0;//number of writing already done.(should go to argwriter)
 int argreader=2560;
 int argwriter=640;
 void *reader(void *args){
+	puts("called reader");
 	while(nread<2560){
 		pthread_mutex_lock(&x);
 			sem_wait(&sread);//new writer waiting
@@ -44,6 +45,7 @@ void *reader(void *args){
 	pthread_exit(NULL);
 }
 void *writer(void *args){
+	puts("called writer");
 	while(nwrite<640){
 		pthread_mutex_lock(&mwriters);
 			writers++; //a new writer has arrived
@@ -53,6 +55,7 @@ void *writer(void *args){
 		pthread_mutex_unlock(&mwriters);
 		sem_wait(&swrite);//only one writer on the db at a time
 			while(rand() > RAND_MAX/10000);//simulate action on db
+			puts("write");
 		sem_post(&swrite);
 		pthread_mutex_lock(&mwriters);
 			nwrite++;//one more read has been done
@@ -66,26 +69,27 @@ void *writer(void *args){
 }
 int main (int argc, char* argv[]){
 	char ch;
-	int nthread_readers=1;
-	int nthread_writers=1;
-	while ((ch=getopt(argc, argv, "rt:wr:r:w:")) !=  EOF){
+	int nthread=3;
+	int nthread_readers;
+	int nthread_writers;
+	while ((ch=getopt(argc, argv, "r:w:t:")) !=  EOF){
 		switch(ch){
+			case 't':
+				nthread=atoi(optarg);
+				break;
 			case 'r':
-				nthread_readers=atoi(optarg);
-				break;
-			case 'w':
-				nthread_writers=atoi(optarg);
-				break;
-			case 'l':
 				argreader=atoi(optarg);
 				break;
-			case 'e':
+			case 'w':
 				argwriter=atoi(optarg);
 				break;
 			default:
 				fprintf(stderr, "invalid argument");
 		}
 	}
+	nthread_writers=nthread/2;
+	nthread_readers=(nthread%2==0) ? nthread/2 : (nthread/2)+1;
+	printf("%d %d %d\n", nthread, nthread_readers,nthread_writers);
 	pthread_mutex_init(&mreaders,NULL);
 	pthread_mutex_init(&mwriters,NULL);
 	pthread_mutex_init (&x,NULL);
@@ -95,15 +99,17 @@ int main (int argc, char* argv[]){
 	pthread_t thread_readers[nthread_readers];
 	pthread_t thread_writers[nthread_writers];
 	int err;
-	puts("init?");
-	for (int i=0; i<argreader;i++){//create readers threads
+	puts("init");
+	for (int i=0; i<nthread_readers;i++){//create readers threads
 		err=pthread_create(&(thread_readers[i]),NULL,&reader,NULL);
+		puts ("tried pthread create read");
 		if(err!=0){
 			fprintf(stderr,"Error creating thread reader %d\n", i);
 		}
 	}
-	for (int i=0; i<argwriter;i++){//create writers threads
+	for (int i=0; i<nthread_writers;i++){//create writers threads
 		err=pthread_create(&(thread_writers[i]),NULL,&writer,NULL);
+		puts ("tried pthread create write");
 		if(err!=0){
 			fprintf(stderr,"Error creating thread writer %d\n", i);
 		}
