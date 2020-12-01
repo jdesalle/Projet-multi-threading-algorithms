@@ -3,6 +3,8 @@
 NTHREAD=8
 RUNS=5
 
+make producer_consumer
+
 echo "coeurs,secondes" > data.csv
 
 for (( i=1; i<=RUNS; i++ ))
