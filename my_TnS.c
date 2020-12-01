@@ -10,29 +10,38 @@
 #include "my_TnS.h"
     
 void lock ( TnS_t *mylock){
-    int ax;
-    do {
-        ax=1;
-    	asm(
-		"xchgl %1, (%0);"//atomic instruction to exchange value of eax and our lock value
-    		:
-    		:"l" (mylock), "a" (ax)
+    int ax=1;
+    while (ax==1){
+	ax=1;
+	asm(	"movl %1, %%eax;"
+		"xchgl %%eax, %0;"//atomic instruction to exchange value of eax and our lock value
+    		"movl %%eax, %1;"
+		:
+    		:"m" (mylock), "m" (ax)
+		:"eax"
 	);
-	 }while(ax==0);
+    }
 }
 void unlock(TnS_t *mylock){
 	int ax=0;
-	asm(
-		"xchgl %1, (%0);"//atomic instruction to exchange value of eax and our lock value
+	asm(	"movl %1, %%eax;"
+		"xchgl %%eax, %0;"//atomic instruction to exchange value of eax and our lock value
 		:
-		:"l" (mylock), "a" (ax)
+		:"m" (mylock), "m" (ax)
+		:"eax"
 	);
 }
+void init(TnS_t *my_lock){
+	*my_lock=0;
+}
+
 int main (){
 	TnS_t i=0;
 	int my_var=0;
 	lock(&i);
+		puts("locked");
 		my_var ++;
 	unlock(&i);
+	puts("unlocked");
 	return 0;
 }
