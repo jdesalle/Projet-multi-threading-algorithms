@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "my_TnTnS.h"
-#include "my_semaphore.h"
+#include "DEP/my_TnTnS.h"
+#include "DEP/my_semaphore.h"
 
 void my_sem_init(my_sem_t *s, int c){
     s->count = c;

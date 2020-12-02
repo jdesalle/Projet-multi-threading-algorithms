@@ -4,8 +4,8 @@
 #include <limits.h>
 #include <errno.h>
 #include <string.h>
-#include "my_TnTnS.h"
-#include "my_semaphore.h"
+#include "DEP/my_TnTnS.h"
+#include "DEP/my_semaphore.h"
 
 #define slots 8
 int NPROD;

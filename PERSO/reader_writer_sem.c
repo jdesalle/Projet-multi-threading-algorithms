@@ -7,8 +7,8 @@
 #include<pthread.h>
 #include<stdlib.h>
 #include<unistd.h>
-#include "my_semaphore.h"
-#include "my_TnTnS.h"
+#include "DEP/my_semaphore.h"
+#include "DEP/my_TnTnS.h"
 
 TnTnS_t mreaders;//protect readers and nread
 TnTnS_t mwriters;//protect writers and nwrite

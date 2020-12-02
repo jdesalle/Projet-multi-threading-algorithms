@@ -3,7 +3,7 @@
  *prof E.Riviere at the Université Catholique de Louvain(UCLouvain), in Belgium. This implementation was written by 
  *pair 3-8 composed of Jonathan de Salle and Philippine de Suraÿ in 2020.
  */
-#include "my_TnTnS.h" 
+#include "DEP/my_TnTnS.h" 
 void lock (TnTnS_t *mylock){
 	while (exchange(mylock, 1)==1) {//we try to get the lock
  		 while (*mylock==1) {}//we didn't get it, we won't try to get it again while the lock is still in use

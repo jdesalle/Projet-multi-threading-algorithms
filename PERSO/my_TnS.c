@@ -7,7 +7,7 @@
 	
 //this implementation use a pointer to an int that will be used as the "lock" in our spinlock.
 //these functions are implemented using inline assembly(X86((IA32) make use of the xchg atomic instruction.
-#include "my_TnS.h"
+#include "DEP/my_TnS.h"
     
 void lock ( TnS_t *mylock){
     int ax=1;
