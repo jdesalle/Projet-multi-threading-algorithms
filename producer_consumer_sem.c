@@ -6,7 +6,7 @@
 #include <errno.h>
 #include <string.h>
 #include "my_TnS.h"
-//#include "semaphore.h"
+//#include "my_semaphore.h"
 
 #define slots 8
 int NPROD;
@@ -16,36 +16,9 @@ typedef struct{
     int count;
 } my_sem_t;
 
-TnS_t mutex; 
+TnS_t mutex;
 my_sem_t empty;
 my_sem_t full;
-    
-void lock(TnS_t *mylock){
-    int ax=1;
-    while (ax==1){
-	ax=1;
-	asm(	"movl %1, %%eax;"
-		"xchgl %%eax, %0;"//atomic instruction to exchange value of eax and our lock value
-    		"movl %%eax, %1;"
-		:
-    		:"m" (mylock), "m" (ax)
-		:"eax"
-	);
-    }
-}
-void unlock(TnS_t *mylock){
-	int ax=0;
-	asm(	"movl %1, %%eax;"
-		"xchgl %%eax, %0;"//atomic instruction to exchange value of eax and our lock value
-		:
-		:"m" (mylock), "m" (ax)
-		:"eax"
-	);
-}
-
-void init(TnS_t *my_lock){
-	*my_lock=0;
-}
 
 void my_sem_init(my_sem_t *s, int c){
     s->count = c;
@@ -53,8 +26,8 @@ void my_sem_init(my_sem_t *s, int c){
 
 void my_sem_wait(my_sem_t *s){
     lock(&mutex);
-    while(s->count == 0);
     s->count--;
+    while(s->count <= 0);
     unlock(&mutex);
 }
 
