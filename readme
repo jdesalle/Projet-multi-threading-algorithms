@@ -10,9 +10,9 @@ To compile our different files, simply use the command "make" or "make all"
 you can also compile a specific file directly using the following commands:
 	make philosphe
 	make reader_writer
-	make producer_consummer
+	make producer_consumer
 	make philosophe_spin
-	make producer_consummer_sem
+	make producer_consumer_sem
 	make reader_writer_sem
 using "make clean" will remove all previously compiled file
 
@@ -43,7 +43,7 @@ MANUAL
 		USAGE
 			
 		DESCRIPTION
-			Implementation of the producer&consummer's problem
+			Implementation of the producer&consumer's problem
 		OPTIONS
 	philosophe_spin
                 USAGE
@@ -71,7 +71,7 @@ MANUAL
                 USAGE   
                            
                 DESCRIPTION
-                        Implementation of the producer&consummer's problem using our implementation of semaphores and Test-and-TesT-and-Set spinlock
+                        Implementation of the producer&consumer's problem using our implementation of semaphores and Test-and-TesT-and-Set spinlock
 
                 OPTIONS
 
