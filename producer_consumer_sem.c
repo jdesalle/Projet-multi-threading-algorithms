@@ -1,41 +1,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <pthread.h>
-#include <semaphore.h>
 #include <limits.h>
 #include <errno.h>
 #include <string.h>
-#include "my_TnS.h"
-//#include "my_semaphore.h"
+#include "my_TnTnS.h"
+#include "my_semaphore.h"
 
 #define slots 8
 int NPROD;
 int NCONS;
 
-typedef struct{
-    int count;
-} my_sem_t;
-
-TnS_t mutex;
+TnTnS_t mutex;
 my_sem_t empty;
 my_sem_t full;
-
-void my_sem_init(my_sem_t *s, int c){
-    s->count = c;
-}
-
-void my_sem_wait(my_sem_t *s){
-    lock(&mutex);
-    s->count--;
-    while(s->count <= 0);
-    unlock(&mutex);
-}
-
-void my_sem_post(my_sem_t *s){
-    lock(&mutex);
-    s->count++;
-    unlock(&mutex);
-}
 
 //int count_c = 0; // à supprimer plus tard (check si on fait bien 1024)
 //int count_p = 0;
