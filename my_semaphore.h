@@ -1,8 +1,12 @@
 #include<stdio.h>
 #include<stdlib.h>
+#include "my_TnTnS.h"
 
-typedef int TnS_t;//our lock actualy use an int, but for the sake code lisiblity we use th TnS_t type.
-//these functions are implemented in inline assembly(x86(IA32)) make use of the xchg atomic instruction.
-void lock (TnS_t *mylock);
-void unlock(TnS_t *mylock);
-void init(TnS_t *mylock);
+typedef struct{
+    int count;
+    TnTnS_t mutex;
+} my_sem_t;
+
+void my_sem_init(my_sem_t *s, int n);
+void my_sem_wait(my_sem_t *s);
+void my_sem_post(my_sem_t *s);
