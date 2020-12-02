@@ -4,11 +4,18 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
+import sys
 
 # On lit les données du fichier csv et on sépare les deux colonnes en deux tableaux
-df= pd.read_csv("data.csv")
+name = sys.argv[1]
+namebis = sys.argv[2]
+df= pd.read_csv("{}.csv".format(name))
 nb_threads = df.coeurs.values
 temps_sec = df.secondes.values
+
+dfbis= pd.read_csv("{}.csv".format(namebis))
+nb_threadsbis = dfbis.coeurs.values
+temps_secbis = dfbis.secondes.values
 
 # On crée nos tableaux qui contiendront les valeurs à tracer
 # n -> nombre de threads
@@ -17,6 +24,9 @@ temps_sec = df.secondes.values
 n = []
 t_moy = []
 ecart_type = []
+
+t_moybis = []
+ecart_typebis = []
 
 # On rempli n en trouvant les différents nombres de threads utilisés
 n.append(nb_threads[0])
@@ -37,9 +47,23 @@ while curr < len(n) :
 	ecart_type.append(np.std(val))
 	t_moy.append(np.mean(val))
 	curr += 1
+
+curr = 0
+while curr < len(n) :
+	val = []
+	i = curr
+	while i < len(temps_secbis) :
+		val.append(temps_secbis[i])
+		i += len(n)
+	ecart_typebis.append(np.std(val))
+	t_moybis.append(np.mean(val))
+	curr += 1
 	
 # On trace le temps d'exécution en fonction du nombre de threads en bleu avec un trait plein de 1 pixel d'épaisseur
-plt.errorbar(n, t_moy, yerr=ecart_type, ecolor='red')
+plt.errorbar(n, t_moy, yerr=ecart_type, ecolor='red', label="avec la librairie C")
+plt.errorbar(n, t_moybis, yerr=ecart_typebis, ecolor='green', label="avec nos primitives d'attente active")
+
+plt.legend()
 
 # Limiter le range de valeurs affichées pour l'axe x (abscisses)
 plt.xlim(n[0]-0.1, n[-1]+0.1)
@@ -63,11 +87,5 @@ plt.title("Mesures de performance")
 plt.grid(True)
 
 # On enregistre les graphiques. L'extension est directement déduite du nom donné en argument (png par défault).
-plt.savefig("Graphes_python.png")
-plt.savefig("Graphes_python.pdf")
-
-# Optionnel : on affiche le graphe à l'écran (note: show est un appel bloquant, tant que le graphe n'est pas fermé, on est bloqué)
-plt.show()
-
-# On ferme proprement le plot.
-plt.close()
+plt.savefig("{}.png".format(name))
+plt.savefig("{}.pdf".format(name))
