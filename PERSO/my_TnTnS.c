@@ -3,7 +3,7 @@
  *prof E.Riviere at the Université Catholique de Louvain(UCLouvain), in Belgium. This implementation was written by 
  *pair 3-8 composed of Jonathan de Salle and Philippine de Suraÿ in 2020.
  */
-#include "DEP/my_TnTnS.h" 
+#include "../DEP/my_TnTnS.h" 
 void lock (TnTnS_t *mylock){
 	while (exchange(mylock, 1)==1) {//we try to get the lock
  		 while (*mylock==1) {}//we didn't get it, we won't try to get it again while the lock is still in use
@@ -12,7 +12,7 @@ void lock (TnTnS_t *mylock){
 void unlock(TnTnS_t *mylock){
 	exchange(mylock,0);
 }
-void init(TnS_t *my_lock){
+void init(TnTnS_t *my_lock){
         *my_lock=0;
 }
 
@@ -27,13 +27,4 @@ int exchange(TnTnS_t *mylock,int i){
         );
 	return ax;
 }
-int main (){
-	TnTnS_t i=0;
-        int my_var=0;
-        lock(&i);
-                puts("locked");
-                my_var ++;
-        unlock(&i);
-        puts("unlocked");
-        return 0;
-}
+

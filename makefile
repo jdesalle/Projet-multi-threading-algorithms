@@ -9,9 +9,9 @@ all:$(OBJ) $(DEP) $(PERSO)
 	$(CC) -o producer_consumer OBJ/producer_consumer.c $(CFLAGS)
 	$(CC) -o philosophe OBJ/philosophe.c $(CFLAGS)
 	$(CC) -o reader_writer OBJ/reader_writer.c $(CFLAGS)
-	$(CC) -o producer_consumer_sem  PERSO/producer_consumer_sem.c PERSO/my_semaphore.c PERSO/my_TnTnS.c  DEP/my_sempahore.h DEP/my_TnTnS.h $(CFLAGS)
-	$(CC) -o reader_writer_sem PERSO/reader_writer_sem.c PERSO/my_semaphore.c PERSO/my_TnTnS.c  DEP/my_sempahore.h DEP/my_TnTnS.h $(CFLAGS)
-	$(CC) -o philosophe_spin philosophe_spin.c DEP/my_TnTnS.c DEP/my_TnTnS.h $(CFLAGS)
+	$(CC) -o producer_consumer_sem  PERSO/producer_consumer_sem.c PERSO/my_semaphore.c PERSO/my_TnTnS.c  DEP/my_semaphore.h DEP/my_TnTnS.h $(CFLAGS)
+	$(CC) -o reader_writer_sem PERSO/reader_writer_sem.c PERSO/my_semaphore.c PERSO/my_TnTnS.c  DEP/my_semaphore.h DEP/my_TnTnS.h $(CFLAGS)
+	$(CC) -o philosophe_spin PERSO/philosophe_spin.c PERSO/my_TnTnS.c DEP/my_TnTnS.h $(CFLAGS)
 producer_consumer: OBJ/producer_consumer.c
 	$(CC) -o producer_consumer OBJ/producer_consumer.c $(CFLAGS)
 philosophe: OBJ/philosophe.c
