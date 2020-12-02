@@ -42,10 +42,13 @@ int main(int argc,char *argv[]){
 	chopstick=chopsticks;//we link this array to ou static pointer, so each thread can use it
 	for (int i=0; i<n;i++){
 		int id=i;
-		err=pthread_create(&phil[i],NULL,&philosopher,(void *) &id);
+		err=pthread_create(&phil[i],NULL,philosopher,(void *) &id);
 		if(err!=0){
 			fprintf(stderr,"Error creating thread %d",id);
 		}
+	}
+	for (int i=0; i<n;i++){
+		pthread_join(phil[i],NULL);
 	}
 	//check destroying mutex
 	return 0;
@@ -60,11 +63,16 @@ void* philosopher(void* arg){
 		//if id is pair, begin with left chopstick, otherwise begin with right (to avoid deadlock)
 		if((id&&0b1)==0){
 			pthread_mutex_lock(&chopstick[id]);
+printf("philosopher %d locked chopstick left\n",id);
 			pthread_mutex_lock(&chopstick[right]);
+printf("philosopher %d locked chopstick right\n",id);
+
 		}
 		else{
 			pthread_mutex_lock(&chopstick[right]);
+printf("philosopher %d locked chopstick right\n",id);
 			pthread_mutex_lock(&chopstick[id]);
+printf("philosopher %d locked chopstick left\n",id);
 		}
 		printf("philosophe %d is eating\n",id);
 		pthread_mutex_unlock(&chopstick[id]);
