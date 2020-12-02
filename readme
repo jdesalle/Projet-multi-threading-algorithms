@@ -15,7 +15,7 @@ you can also compile a specific file directly using the following commands:
 	make producer_consumer_sem
 	make reader_writer_sem
 using "make clean" will remove all previously compiled file
-
+using make test launch the test for TnS and TnTnS lock. 
 MANUAL
 	philosophe
 		USAGE
@@ -74,4 +74,4 @@ MANUAL
                         Implementation of the producer&consumer's problem using our implementation of semaphores and Test-and-TesT-and-Set spinlock
 
                 OPTIONS
-
+	
