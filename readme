@@ -41,10 +41,9 @@ MANUAL
 			  define the total number of write (default=)
 	producer_consumer
 		USAGE
-			
+			./producer_consumer [NTHREAD]
 		DESCRIPTION
 			Implementation of the producer&consumer's problem
-		OPTIONS
 	philosophe_spin
                 USAGE
                         ./philosophe [-t NTHREAD] [-r NREP]
@@ -67,11 +66,9 @@ MANUAL
                           define the total numbe of reads(default=)
                         -w
                           define the total number of write (default=)
-        producer_consumer
+        producer_consumer_sem
                 USAGE   
-                           
+                        ./producer_consumer_sem [NTHREAD]   
                 DESCRIPTION
                         Implementation of the producer&consumer's problem using our implementation of semaphores and Test-and-TesT-and-Set spinlock
-
-                OPTIONS
 	
