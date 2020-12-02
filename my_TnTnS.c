@@ -12,6 +12,10 @@ void lock (TnTnS_t *mylock){
 void unlock(TnTnS_t *mylock){
 	exchange(mylock,0);
 }
+void init(TnS_t *my_lock){
+        *my_lock=0;
+}
+
 int exchange(TnTnS_t *mylock,int i){
 	int ax=i;
 	asm(    "movl %1, %%eax;"

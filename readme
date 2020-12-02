@@ -1,0 +1,77 @@
+
+/*
+ *This project ws realised in the scope of the course "LINFO1252:Computer Systems" given by prof E.Riviere at the 
+ *Université Catholique de Louvain(UCLouvain), in Belgium. This implementation was written by pair 3-8 composed 
+ *of Jonathan de Salle and Philippine de Suraÿ in 2020.
+ */
+
+
+To compile our different files, simply use the command "make" or "make all"
+you can also compile a specific file directly using the following commands:
+	make philosphe
+	make reader_writer
+	make producer_consummer
+	make philosophe_spin
+	make producer_consummer_sem
+	make reader_writer_sem
+using "make clean" will remove all previously compiled file
+
+MANUAL
+	philosophe
+		USAGE
+			./philosophe [-t NTHREAD] [-r NREP]
+		DESCRPTION
+			implementation of the philosopher's problem
+		OPTIONS
+			-t 
+			  define the number of threads(default =5)
+			-r
+			  define the number of repetition each thread go through (default=5)
+	reader_writer
+		USAGE
+			./reader_writer [-t NTHREAD][-r NREAD][-w NWRITE]
+		DESCRIPTION
+			implementation of the reader&writer's problem
+		OPTIONS
+			-t
+			  define the number of threads (default=)
+			-r
+			  define the total numbe of reads(default=)
+			-w
+			  define the total number of write (default=)
+	producer_consumer
+		USAGE
+			
+		DESCRIPTION
+			Implementation of the producer&consummer's problem
+		OPTIONS
+	philosophe_spin
+                USAGE
+                        ./philosophe [-t NTHREAD] [-r NREP]
+                DESCRPTION
+                        implementation of the philosopher's problem using our implementation of Test-and-TesT-and-Set spinlock
+                OPTIONS
+                        -t
+                          define the number of threads(default =5)
+                        -r     
+                          define the number of repetition each thread go through (default=5)
+        reader_writer_sem   
+                USAGE   
+                        ./reader_writer [-t NTHREAD][-r NREAD][-w NWRITE]
+                DESCRIPTION
+                        implementation of the reader&writer's problem using our implementation of semaphores and Test-and-TesT-and-Set spinlock
+                OPTIONS   
+                        -t
+                          define the number of threads (default=)
+                        -r
+                          define the total numbe of reads(default=)
+                        -w
+                          define the total number of write (default=)
+        producer_consumer
+                USAGE   
+                           
+                DESCRIPTION
+                        Implementation of the producer&consummer's problem using our implementation of semaphores and Test-and-TesT-and-Set spinlock
+
+                OPTIONS
+
