@@ -1,22 +1,30 @@
 CC= gcc
 CFLAGS=-I -std=c99  -Wall -Werror -pthread
-OBJ=producer_consumer.c philosophe.c my_TnS.c reader_writer.c my_TnTnS.c
-
-DEP= my_TnS.h my_TnTnS.h
-all:$(OBJ) $(DEP)
+OBJ=producer_consumer.c philosophe.c reader_writer.c
+PERSO=my_TnS.c my_TnTnS.c my_semaphore.c  producer_consumer_sem.c  philosophe_spin.c reader_writer_sem.c
+DEP=my_TnS.h my_TnTnS.h my_semaphore.h
+DEST=producer_consumer philosophe reader_writer
+DESTPERSO=producer_consumer_sem philosophe_spin reader_writer_sem
+all:$(OBJ) $(DEP) $(PERSO)
 	$(CC) -o producer_consumer producer_consumer.c $(CFLAGS)
 	$(CC) -o philosophe philosophe.c $(CFLAGS)
-	$(CC) -o TnS my_TnS.c my_TnS.h $(CFLAGS)
 	$(CC) -o reader_writer reader_writer.c $(CFLAGS)
-	$(CC) -o TnTnS my_TnTnS.c my_TnTnS.h $(CFLAGS)
+	$(CC) -o producer_consumer_sem  producer_consumer_sem.c my_semaphore.c my_TnTnS.c  my_sempahore.h my_TnTnS.h
+	$(CC) -o reader_writer_sem reader_writer_sem.c my_semaphore.c my_TnTnS.c  my_sempahore.h my_TnTnS.h $(CFLAGS)
+	$(CC) -o philosophe_spin philosophe_spin.c my_TnTnS.c my_TnTnS.h $(CFLAGS)
 producer_consumer: producer_consumer.c
 	$(CC) -o producer_consumer producer_consumer.c $(CFLAGS)
 philosophe: philosophe.c
-	$(CC) -o philosophe philosophe.c $(CFLAGS)
-TnS: my_TnS.c my_TnS.h 
-	$(CC) -o TnS my_TnS.c my_TnS.h $(CFLAGS)
+ 	$(CC) -o philosophe philosophe.c $(CFLAGS)
 reader_writer:reader_writer.c
 	$(CC) -o reader_writer reader_writer.c $(CFLAGS)
-TnTnS: my_TnTnS.c  my_TnTnS.h
-	$(CC) -o TnTnS my_TnTnS.c my_TnTnS.h $(CFLAGS)
+producer_consumer_sem:producer_consumer.c my_semaphore.c my_TnTnS.c  my_sempahore.h my_TnTnS.h
+	$(CC) -o producer_consumer_sem  producer_consumer_sem.c my_semaphore.c my_TnTnS.c  my_sempahore.h my_TnTnS.h
+reader_writer_sem:reader_writer_sem.c my_semaphore.c my_TnTnS.c  my_sempahore.h my_TnTnS.h
+	$(CC) -o reader_writer_sem reader_writer_sem.c my_semaphore.c my_TnTnS.c  my_sempahore.h my_TnTnS.h $(CFLAGS)
+philosophe_spin: philosphe_spin.c my_TnTnS.c my_TnTnS.h
+	$(CC) -o philosophe_spin philosophe_spin.c my_TnTnS.c my_TnTnS.h $(CFLAGS)
 
+clean:$(DEST) $(DESTPERSO)
+	rm -f $(DEST) $(DESTPERSO)
+test:
