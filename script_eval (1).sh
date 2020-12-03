@@ -49,30 +49,6 @@ do
 done
 ./plot_performance.py philosophe philosophe_spin
 
-make producer_consumer
-echo "coeurs,secondes" > producer_consumer.csv
-for (( i=1; i<=RUNS; i++ ))
-do
-	for (( n=2; n<=NTHREAD; n++ ))
-	do
-		output=$(/usr/bin/time -f %e ./producer_consumer $n 2>&1)
-		echo $n,$output >> producer_consumer.csv
-	done
-done
-
-make producer_consumer_sem
-echo "coeurs,secondes" > producer_consumer_sem.csv
-
-for (( i=1; i<=RUNS; i++ ))
-do
-	for (( n=2; n<=NTHREAD; n++ ))
-	do
-		output=$(/usr/bin/time -f %e ./producer_consumer_sem $n 2>&1)
-		echo $n,$output >> producer_consumer_sem.csv
-	done
-done
-./plot_performance.py producer_consumer producer_consumer_sem
-
 make reader_writer
 echo "coeurs,secondes" > reader_writer.csv
 
@@ -97,3 +73,26 @@ do
 done
 ./plot_performance.py reader_writer reader_writer_sem
 
+make producer_consumer
+echo "coeurs,secondes" > producer_consumer.csv
+for (( i=1; i<=RUNS; i++ ))
+do
+	for (( n=2; n<=NTHREAD; n++ ))
+	do
+		output=$(/usr/bin/time -f %e ./producer_consumer $n 2>&1)
+		echo $n,$output >> producer_consumer.csv
+	done
+done
+
+make producer_consumer_sem
+echo "coeurs,secondes" > producer_consumer_sem.csv
+
+for (( i=1; i<=RUNS; i++ ))
+do
+	for (( n=2; n<=NTHREAD; n++ ))
+	do
+		output=$(/usr/bin/time -f %e ./producer_consumer_sem $n 2>&1)
+		echo $n,$output >> producer_consumer_sem.csv
+	done
+done
+./plot_performance.py producer_consumer producer_consumer_sem
