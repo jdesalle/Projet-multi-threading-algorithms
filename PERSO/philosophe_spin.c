@@ -58,20 +58,20 @@ void* philosopher(void* arg){
 	int id=*((int *)arg);
 	int right=((id+1)%n);//allow us to circle for the last philosopher
 	for (int i=0;i<r;i++){
-		printf("philosophe %d is thinking\n",id);
+		//printf("philosophe %d is thinking\n",id);
 		//if id is pair, begin with left chopstick, otherwise begin with right (to avoid deadlock)
 		if((id&&0b1)==0){
 			lock(&chopstick[id]);
-printf("philosopher %d locked chopstick left\n",id);
+//printf("philosopher %d locked chopstick left\n",id);
 			lock(&chopstick[right]);
-printf("philosopher %d locked chopstick right\n",id);
+//printf("philosopher %d locked chopstick right\n",id);
 
 		}
 		else{
 			lock(&chopstick[right]);
-printf("philosopher %d locked chopstick right\n",id);
+//printf("philosopher %d locked chopstick right\n",id);
 			lock(&chopstick[id]);
-printf("philosopher %d locked chopstick left\n",id);
+//printf("philosopher %d locked chopstick left\n",id);
 		}
 		printf("philosophe %d is eating\n",id);
 		unlock(&chopstick[id]);
