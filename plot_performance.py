@@ -60,9 +60,9 @@ while curr < len(n) :
 	curr += 1
 	
 # On trace le temps d'exécution en fonction du nombre de threads
-plt.errorbar(n, t_moy, yerr=ecart_type, color='blue', ecolor='red', label="verrou TnS")
+plt.errorbar(n, t_moy, yerr=ecart_type, color='blue', ecolor='red', label="avec la librairie c")
 
-plt.errorbar(n, t_moybis, yerr=ecart_typebis, color='orange', ecolor='green', label="verrou TnTnS")
+plt.errorbar(n, t_moybis, yerr=ecart_typebis, color='orange', ecolor='green', label="avec nos primitives d'attente active")
 
 plt.legend()
 
