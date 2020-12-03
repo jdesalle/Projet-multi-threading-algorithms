@@ -2,6 +2,28 @@
 
 NTHREAD=8
 RUNS=5
+make philosophe
+echo "coeurs,secondes" > philosophe.csv
+for (( i=1; i<=RUNS; i++ ))
+do
+        for (( n=2; n<=NTHREAD; n++ ))
+        do
+                output=$(/usr/bin/time -f %e ./philosophe -t $n -r 100000 2>&1)
+                echo $n,$output >> philosophe.csv
+        done
+done
+
+make philosophe_spin
+echo "coeurs,secondes" > philosophe_spin.csv
+for (( i=1; i<=RUNS; i++ ))
+do
+        for (( n=2; n<=NTHREAD; n++ ))
+        do
+                output=$(/usr/bin/time -f %e ./philosophe_spin -t $n -r 100000 2>&1)
+                echo $n,$output >> philosophe_spin.csv
+        done
+done
+./plot_performance.py philosophe philosophe_spin
 
 make test_verrouTnS
 echo "coeurs,secondes" > test_verrouTnS.csv
@@ -25,29 +47,6 @@ do
 	done
 done
 ./plot_performance.py test_verrouTnS test_verrouTnTnS
-
-make philosophe
-echo "coeurs,secondes" > philosophe.csv
-for (( i=1; i<=RUNS; i++ ))
-do
-	for (( n=2; n<=NTHREAD; n++ ))
-	do
-		output=$(/usr/bin/time -f %e ./philosophe_ -t $n -r 10000 2>&1)
-		echo $n,$output >> philosophe.csv
-	done
-done
-
-make philosophe_spin
-echo "coeurs,secondes" > philosophe_spin.csv
-for (( i=1; i<=RUNS; i++ ))
-do
-	for (( n=2; n<=NTHREAD; n++ ))
-	do
-		output=$(/usr/bin/time -f %e ./philosophe_spin -t $n -r 10000 2>&1)
-		echo $n,$output >> philosophe_spin.csv
-	done
-done
-./plot_performance.py philosophe philosophe_spin
 
 make producer_consumer
 echo "coeurs,secondes" > producer_consumer.csv
