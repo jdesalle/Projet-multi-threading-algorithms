@@ -73,7 +73,7 @@ void* philosopher(void* arg){
 			lock(&chopstick[id]);
 //printf("philosopher %d locked chopstick left\n",id);
 		}
-		printf("philosophe %d is eating\n",id);
+		//printf("philosophe %d is eating\n",id);
 		unlock(&chopstick[id]);
 		unlock(&chopstick[right]);
 	}
