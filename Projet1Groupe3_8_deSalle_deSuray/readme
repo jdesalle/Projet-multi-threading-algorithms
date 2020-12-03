@@ -72,3 +72,8 @@ MANUAL
                 DESCRIPTION
                         Implementation of the producer&consumer's problem using our implementation of semaphores and Test-and-TesT-and-Set spinlock
 	
+	./plot_performance.py
+		USAGE
+			./plot_performance.py [PROGRAMME_1] [PROGRAMME_2]
+		DESCRIPTION
+			Pyhton script plotting the mean and the standart deviation of the execution time of the two programs and then putting them together
