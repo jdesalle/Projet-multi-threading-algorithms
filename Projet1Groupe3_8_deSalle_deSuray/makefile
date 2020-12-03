@@ -25,15 +25,15 @@ producer_consumer_sem:PERSO/producer_consumer_sem.c PERSO/my_semaphore.c PERSO/m
 	$(CC) -o producer_consumer_sem  PERSO/producer_consumer_sem.c PERSO/my_semaphore.c PERSO/my_TnTnS.c  DEP/my_semaphore.h DEP/my_TnTnS.h $(CFLAGS)
 reader_writer_sem:PERSO/reader_writer_sem.c PERSO/my_semaphore.c PERSO/my_TnTnS.c  DEP/my_semaphore.h DEP/my_TnTnS.h
 	$(CC) -o reader_writer_sem PERSO/reader_writer_sem.c PERSO/my_semaphore.c PERSO/my_TnTnS.c  DEP/my_semaphore.h DEP/my_TnTnS.h $(CFLAGS)
-philosophe_spin: PERSO/philosphe_spin.c PERSO/my_TnTnS.c DEP/my_TnTnS.h
+philosophe_spin: PERSO/philosophe_spin.c PERSO/my_TnTnS.c DEP/my_TnTnS.h
 	$(CC) -o philosophe_spin PERSO/philosophe_spin.c PERSO/my_TnTnS.c DEP/my_TnTnS.h $(CFLAGS)
-test_verrouTnS: test_verrouTnS test_verrouTnS.c PERSO/my_TnS.c DEP/my_TnS.h
+test_verrouTnS: test_verrouTnS.c PERSO/my_TnS.c DEP/my_TnS.h
 	$(CC) -o test_verrouTnS test_verrouTnS.c PERSO/my_TnS.c DEP/my_TnS.h $(CFLAGS)
-test_verrouTnTnS: test_verrouTnTnS test_verrouTnTnS.c PERSO/my_TnTnS.c DEP/my_TnTnS.h
+test_verrouTnTnS:  test_verrouTnTnS.c PERSO/my_TnTnS.c DEP/my_TnTnS.h
 	$(CC) -o test_verrouTnTnS test_verrouTnTnS.c PERSO/my_TnTnS.c DEP/my_TnTnS.h $(CFLAGS)
 clean:$(DEST) $(DESTPERSO)
 	rm -f $(DEST) $(DESTPERSO)
-test:
+test:	$(TEST)
 	$(CC) -o test_verrouTnTnS test_verrouTnTnS.c PERSO/my_TnTnS.c DEP/my_TnTnS.h $(CFLAGS)
 	$(CC) -o test_verrouTnS test_verrouTnS.c PERSO/my_TnS.c DEP/my_TnS.h $(CFLAGS)
 	./test_verrouTnS

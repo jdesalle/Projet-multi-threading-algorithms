@@ -59,22 +59,22 @@ void* philosopher(void* arg){
 	int id=*((int *)arg);
 	int right=((id+1)%n);//allow us to circle for the last philosopher
 	for (int i=0;i<r;i++){
-		printf("philosophe %d is thinking\n",id);
+//		printf("philosophe %d is thinking\n",id);
 		//if id is pair, begin with left chopstick, otherwise begin with right (to avoid deadlock)
 		if((id&&0b1)==0){
 			pthread_mutex_lock(&chopstick[id]);
-printf("philosopher %d locked chopstick left\n",id);
+//printf("philosopher %d locked chopstick left\n",id);
 			pthread_mutex_lock(&chopstick[right]);
-printf("philosopher %d locked chopstick right\n",id);
+//printf("philosopher %d locked chopstick right\n",id);
 
 		}
 		else{
 			pthread_mutex_lock(&chopstick[right]);
-printf("philosopher %d locked chopstick right\n",id);
+//printf("philosopher %d locked chopstick right\n",id);
 			pthread_mutex_lock(&chopstick[id]);
-printf("philosopher %d locked chopstick left\n",id);
+//printf("philosopher %d locked chopstick left\n",id);
 		}
-		printf("philosophe %d is eating\n",id);
+//		printf("philosophe %d is eating\n",id);
 		pthread_mutex_unlock(&chopstick[id]);
 		pthread_mutex_unlock(&chopstick[right]);
 	}

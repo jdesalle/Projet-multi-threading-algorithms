@@ -38,9 +38,9 @@ int main(int argc,char *argv[]){
 void *test(void *arg){
 	for (int i=0;i<r/n;i++){
 		lock(&mylock);
-puts("locked");
+//puts("locked");
 		unlock(&mylock);
-puts("unlocked");
+//puts("unlocked");
 		while(rand()>RAND_MAX/10000);//simulate an access while allowing the next access immediately
 	}
 	pthread_exit(NULL);
