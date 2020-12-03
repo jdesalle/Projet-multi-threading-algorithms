@@ -59,9 +59,10 @@ while curr < len(n) :
 	t_moybis.append(np.mean(val))
 	curr += 1
 	
-# On trace le temps d'exécution en fonction du nombre de threads en bleu avec un trait plein de 1 pixel d'épaisseur
-plt.errorbar(n, t_moy, yerr=ecart_type, ecolor='red', label="avec la librairie C")
-plt.errorbar(n, t_moybis, yerr=ecart_typebis, ecolor='green', label="avec nos primitives d'attente active")
+# On trace le temps d'exécution en fonction du nombre de threads
+plt.errorbar(n, t_moy, yerr=ecart_type, color='blue', ecolor='red', label="verrou TnS")
+
+plt.errorbar(n, t_moybis, yerr=ecart_typebis, color='orange', ecolor='green', label="verrou TnTnS")
 
 plt.legend()
 

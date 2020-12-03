@@ -32,7 +32,7 @@ for (( i=1; i<=RUNS; i++ ))
 do
 	for (( n=2; n<=NTHREAD; n++ ))
 	do
-		output=$(/usr/bin/time -f %e ./philosophe_ -t $n -r 10000 2>&1)
+		output=$(/usr/bin/time -f %e ./philosophe -t $n -r 10000 2>&1)
 		echo $n,$output >> philosophe.csv
 	done
 done
