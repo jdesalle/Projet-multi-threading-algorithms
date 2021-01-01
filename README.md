@@ -2,4 +2,5 @@
 
 Implementation of various multi-threading algorithms and structures (spinlocks and semaphore) realised for the course "LINFO1252:Computer Systems" given by prof E.Riviere at the Université Catholique de Louvain (UCLouvain), in Belgium. This implementation was written by pair 3-8 composed of Jonathan de Salle and Philippine de Suraÿ in 2020.
  
+The project description can be found [HERE](https://github.com/jdesalle/Projet-multi-threading-algorithms/blob/main/Projet_1_multithread_complet.pdf) 
 
